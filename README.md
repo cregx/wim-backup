@@ -7,7 +7,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/cregx/wim-backup)](https://github.com/cregx/wim-backup/stargazers)
 [![Github All Releases](https://img.shields.io/github/downloads/cregx/wim-backup/total.svg)]()
 
-The UI application "WIM-Backup" offers the possibility to create backups of hard disks (partitions) in a Windows environment. The Windows Imaging Format (WIM) is used for this purpose.
+The UI application "WIM-Backup" offers the possibility to create backups of hard disks (partitions) in a WinPE environment. The Windows Imaging Format (WIM) is used for this purpose.
 
 WIM-Backup is a Win32 application created in (Microsoft) C and Visual Studio 2010. Of course, you can also compile the project using a newer version of Visual Studio, such as 2019, or you can use an already compiled release version.
 
