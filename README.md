@@ -1,4 +1,5 @@
 # WIM-Backup (coming soon - is in the preparation process)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Visual Studio](https://badgen.net/badge/icon/visualstudio?icon=visualstudio&label)](https://visualstudio.microsoft.com)
 [![GitHub issues](https://img.shields.io/github/issues/cregx/wim-backup)](https://github.com/cregx/wim-backup/issues)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed/cregx/wim-backup)](https://github.com/cregx/wim-backup/issues?q=is%3Aissue+is%3Aclosed)
