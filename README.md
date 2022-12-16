@@ -15,6 +15,18 @@ WIM-Backup is a Win32 application created in (Microsoft) C and Visual Studio 201
 
 In the process of troubleshooting and fixing bugs on Windows 10-based systems, I repeatedly had to perform new installations of the operating system. This process proved to be very time-consuming in some cases. So I came up with the idea of backing up the Windows image so that it could be restored without much effort if necessary. This was the birth of WIM-Backup.
 
+<p align="center" width="100%">
+<img alt="wim-backup UI" src="https://user-images.githubusercontent.com/14788832/208148759-8b61ad62-2a00-4ebf-aeef-5ffca6030afd.png" width="50%" height="50%" />
+</p>
+
+#### Components of the solution
+The solution consists of the following four components:
+
+- **wimbckup.exe**: GUI-based application of the wim-backup solution
+- **action.bat**: batch script responsible for executing the backup (creating the WIM file) and restoring the system from a WIM file
+- **diskpart.txt**: parameter file with instructions for diskpart, which is needed for the restore process
+- **winpeshl.ini**: template file for the execution of wim-backup (wimbckup.exe) within the WinPE environment
+
 ## Code of Conduct
 
 Please refer to the [Code of Conduct](https://github.com/cregx/wim-backup/blob/main/CODE_OF_CONDUCT.md) for this repository.
