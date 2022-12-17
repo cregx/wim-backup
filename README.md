@@ -29,6 +29,14 @@ The solution consists of the following four components:
 - **diskpart.txt**: parameter file with instructions for diskpart, which is needed for the restore process
 - **winpeshl.ini**: template file for the execution of wim-backup (wimbckup.exe) within the WinPE environment
 
+#### Rough flowchart
+
+The following sketch roughly illustrates the essential relationships.
+
+<p align="center" width="100%">
+<img alt="wim-backup rough flowchar" src="https://user-images.githubusercontent.com/14788832/208229659-e2b77a70-f128-4320-a91e-1e2d8ac69626.png" width="70%" height="70%" />
+</p>
+
 ## Code of Conduct
 
 Please refer to the [Code of Conduct](https://github.com/cregx/wim-backup/blob/main/CODE_OF_CONDUCT.md) for this repository.
