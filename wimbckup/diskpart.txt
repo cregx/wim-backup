@@ -1,0 +1,26 @@
+rem These commands are used with DiskPart tool for a UEFI/GPT-based PC.
+rem Erase the drive and create five partitions
+rem == Erase the entire drive ===========================================
+select disk 0
+clean
+convert gpt
+rem == Create System Partition ==========================================
+create partition efi size=100
+rem ** NOTE: For 4KB-per-sector drives, change this value to size=260. **
+format quick fs=fat32 label="System"
+assign letter="S"
+rem == Create Microsoft Reserved (MSR) Partition ========================
+create partition msr size=16
+rem == Create Windows Partition =========================================
+create partition primary
+rem == Create space for Windows RE tools partition ======================
+shrink minimum=450
+rem == Format the Windows partition =====================================
+format quick fs=ntfs label="Windows"
+assign letter="W"
+rem == Create the Windows RE Tools Partition ============================
+create partition primary
+format quick fs=ntfs label="Windows RE tools"
+set id=de94bba4-06d1-4d40-a16a-bfd50179d6ac
+assign letter="T"
+exit
