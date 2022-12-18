@@ -1,4 +1,4 @@
-# WIM-Backup (coming soon - is in the preparation process)
+# WIM-Backup (this document is not yet ready)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Visual Studio](https://badgen.net/badge/icon/visualstudio?icon=visualstudio&label)](https://visualstudio.microsoft.com)
 [![GitHub issues](https://img.shields.io/github/issues/cregx/wim-backup)](https://github.com/cregx/wim-backup/issues)
@@ -36,6 +36,26 @@ The following sketch roughly illustrates the essential relationships.
 <p align="center" width="100%">
 <img alt="wim-backup rough flowchar" src="https://user-images.githubusercontent.com/14788832/208229659-e2b77a70-f128-4320-a91e-1e2d8ac69626.png" width="70%" height="70%" />
 </p>
+
+### How to use wim-backup (step-by-step instructions)
+
+> The instructions described below are necessary because the solution requires the use of a WinPE-based boot medium. However, this must not be made available for licensing reasons. 
+
+> In short: I am not allowed to provide a bootable ISO file with the solution. You will have to create it yourself.
+
+1. [Download](https://github.com/cregx/wim-backup/releases) a current release version of **wim-backup** (or compile your own customised version).
+2. You will need the Deployment and Imaging Tools from Microsoft. These can be found in the [Windows ADK](https://learn.microsoft.com/en-us/windows-hardware/get-started/adk-install) (Windows Assessment and Deployment Kit). Be sure to download the appropriate ADK version for your development environment (your Windows version). Make sure that you have selected the **Deployment Tools** in the features.
+<p align="center" width="100%">
+<img alt="adk-installation-screenshot" src="https://user-images.githubusercontent.com/14788832/208288059-db11b50d-09d8-4fab-9339-f8a2c17ce7ab.PNG" width="60%" height="60%" />
+</p>
+
+3. In addition, you need the **Windows Assessment and Deployment Kit Windows Preinstallation Environment Add-ons** (see download link from ADK). These are installed following the ADK setup.
+<p align="center" width="100%">
+<img alt="winpe-addons-installation" src="https://user-images.githubusercontent.com/14788832/208288374-c8305c4e-2863-48eb-a88c-6775a41d7c9d.PNG" width="60%" height="60%" />
+</p>
+
+4. Todo ...
+
 
 ## Code of Conduct
 
