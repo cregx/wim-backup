@@ -18,7 +18,7 @@ WIM-Backup is a Win32 application created in (Microsoft) C and Visual Studio 201
 In the process of troubleshooting and fixing bugs on Windows 10-based systems, I repeatedly had to perform new installations of the operating system. This process proved to be very time-consuming in some cases. So I came up with the idea of backing up the Windows image so that it could be restored without much effort if necessary. This was the birth of WIM-Backup.
 
 <p align="center" width="100%">
-<img alt="wim-backup UI" src="https://user-images.githubusercontent.com/14788832/208148759-8b61ad62-2a00-4ebf-aeef-5ffca6030afd.png" width="50%" height="50%" />
+<img alt="wim-backup UI" src="https://user-images.githubusercontent.com/14788832/208285320-7b9b63a8-2d20-41b7-98e7-139b15d1b47d.png" width="50%" height="50%" />
 </p>
 
 #### Components of the solution
