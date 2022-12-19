@@ -54,8 +54,19 @@ The following sketch roughly illustrates the essential relationships.
 <img alt="winpe-addons-installation" src="https://user-images.githubusercontent.com/14788832/208288374-c8305c4e-2863-48eb-a88c-6775a41d7c9d.PNG" width="60%" height="60%" />
 </p>
 
-4. Todo ...
+4. Assuming that the processing of the previous steps was successful, the next step is to create a WinPE-enabled boot medium. This contains the WIM-Backup solution. To do this, start the **Deployment and Imaging Tools Environment** with administrative privileges and **copy** the **amd64** directory to a folder that does not yet exist, for example **C:\temp\media**.
 
+```
+copype amd64 c:\temp\media
+```
+
+5. Then mount the **boot.wim** image from the previously copied **amd64** directory to the newly created **c:\temp\media\mount** directory.
+
+```
+dism /mount-image /imagefile:C\temp\media\media\source\boot.wim /mountdir:C:\temp\media\mount /index:1
+```
+
+6. Todo...
 
 ## Code of Conduct
 
