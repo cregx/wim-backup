@@ -8,7 +8,6 @@
 [![Github All Releases](https://img.shields.io/github/downloads/cregx/wim-backup/total.svg)]()
 [![Code-Signed](https://img.shields.io/badge/code--signed%20exe-Yes-green)](https://github.com/cregx/wim-backup/releases)
 
-
 The UI application "WIM-Backup" offers the possibility to create backups of hard disks (partitions) in a WinPE environment. The Windows Imaging Format (WIM) is used for this purpose.
 
 WIM-Backup is a Win32 application created in (Microsoft) C and Visual Studio 2010. Of course, you can also compile the project using a newer version of Visual Studio, such as 2019, or you can use an already compiled release version.
@@ -54,19 +53,60 @@ The following sketch roughly illustrates the essential relationships.
 <img alt="winpe-addons-installation" src="https://user-images.githubusercontent.com/14788832/208288374-c8305c4e-2863-48eb-a88c-6775a41d7c9d.PNG" width="60%" height="60%" />
 </p>
 
-4. Assuming that the processing of the previous steps was successful, the next step is to create a WinPE-enabled boot medium. This contains the WIM-Backup solution. To do this, start the **Deployment and Imaging Tools Environment** with administrative privileges and **copy** the **amd64** directory to a folder that does not yet exist, for example **C:\temp\media**.
+4. Assuming that the processing of the previous steps was successful, the next step is to create a WinPE-enabled boot medium. This contains the WIM-Backup solution. To do this, start the **Deployment and Imaging Tools Environment** with **administrative** privileges.
+
+5. Copy the **amd64** directory to a folder that does not yet exist, for example **C:\temp\media**.
 
 ```
 copype amd64 c:\temp\media
 ```
 
-5. Then mount the **boot.wim** image from the previously copied **amd64** directory to the newly created **c:\temp\media\mount** directory.
+<p align="center" width="100%">
+<img alt="copype-to-media" src="https://user-images.githubusercontent.com/14788832/208670949-73eac611-35a0-4772-8572-006f87844d15.png" width="60%" height="60%" />
+
+6. Then mount the **boot.wim** image from the previously copied **amd64** directory to the newly created **c:\temp\media\mount** directory.
 
 ```
 dism /mount-image /imagefile:C\temp\media\media\source\boot.wim /mountdir:C:\temp\media\mount /index:1
 ```
 
-6. Todo...
+7. Create the folder **Tools** in the directory **C:\Temp\media\mount**.
+
+8. Now copy the following release files into this folder:
+* **wimbckup.exe**
+* **action.bat**
+* **diskpart.txt**
+
+9. You also need to copy the **winpkeshl.ini** file to **C:\Temp\media\mount\Windows\System32**.
+
+10. Finally, the mounted image must be **un-mounted** and the **WinPEMedia ISO file** must be created.
+
+```
+dism /unmount-image /mountdir:C:\temp\media\mount /commit
+...
+cd ..
+cd "Windows Preinstallation Environment"
+MakeWinPEMedia.cmd /iso C:\temp\media C:\temp\wim-backup-100.iso
+```
+
+11. After having created the **WinPE-ISO** file, we can now use [Rufus](https://rufus.ie/) to transfer it to a **USB flash drive** to boot from and create a WIM-based backup or restore an existing one.
+
+<p align="center" width="100%">
+<img alt="rufus-create-bootable-drive" src="https://user-images.githubusercontent.com/14788832/208671977-82813a19-1fb7-4526-9e0b-263ab906aa79.PNG" width="30%" height="30%" />
+
+## WIM-Backup in action
+
+The animation below shows WIM-Backup in action.
+Todo ...
+
+## FAQ
+
+❓ How much time should I expect to spend trying out the solution in my environment?
+It is very difficult to give a general answer to this question. I estimate the time required to work through the instruction steps at around 30 to 60 minutes.
+
+❓ Why is no bootable, i.e. ready-to-use ISO image incl. the WIM backup solution offered?
+The issue is with the license terms. According to this, I am not allowed to provide a pre-built image based on WinPE.
+That is the reason why every developer has to create his own ISO image. The internal use of this image (within the own team) should then not be a problem.
 
 ## Code of Conduct
 
