@@ -1,4 +1,4 @@
-# WIM-Backup (this document is not yet ready)
+# WIM-Backup
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Visual Studio](https://badgen.net/badge/icon/visualstudio?icon=visualstudio&label)](https://visualstudio.microsoft.com)
 [![GitHub issues](https://img.shields.io/github/issues/cregx/wim-backup)](https://github.com/cregx/wim-backup/issues)
@@ -96,7 +96,7 @@ MakeWinPEMedia.cmd /iso C:\temp\media C:\temp\wim-backup-100.iso
 
 ## WIM-Backup in action
 
-The animation below shows WIM-Backup in action.
+The following animation shows WIM-Backup in action when creating a backup.
 
 <p align="center" width="100%">
 <img alt="wim-backup-animation-optimized" src="https://user-images.githubusercontent.com/14788832/209192953-c536cee4-1518-422d-b4d3-bfca5b6ee420.gif" width="75%" height="75%" />
@@ -112,6 +112,13 @@ It is very difficult to give a general answer to this question. I estimate the t
 
 The issue is with the license terms. According to this, I am not allowed to provide a pre-built image based on WinPE.
 That is the reason why every developer has to create his own ISO image. The internal use of this image (within the own team) should then not be a problem.
+
+### :question: Are there any known limitations to using WIM backup?
+
+Yes, the list below shows the currently known restrictions:
+
+- If you want to backup a BitLocker-encrypted drive, you must first stop active BitLocker protection (BDE) in Windows. However, this does not mean that you have to decrypt the encrypted drive first. Once you exit BDE protection and restart the PC to boot from WinPE into the solution, WIM-Backup can access the drive. However, if you forget this step, WIM-Backup will not recognize the BDE-encrypted drive.
+- During the restore process, you can restore an existing WIM backup image on the C: drive only. Restoring to other drives is not supported.
 
 ## Code of Conduct
 
