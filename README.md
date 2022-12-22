@@ -97,14 +97,17 @@ MakeWinPEMedia.cmd /iso C:\temp\media C:\temp\wim-backup-100.iso
 ## WIM-Backup in action
 
 The animation below shows WIM-Backup in action.
-Todo ...
+
+
 
 ## FAQ
 
 ❓ How much time should I expect to spend trying out the solution in my environment?
+
 It is very difficult to give a general answer to this question. I estimate the time required to work through the instruction steps at around 30 to 60 minutes.
 
 ❓ Why is no bootable, i.e. ready-to-use ISO image incl. the WIM backup solution offered?
+
 The issue is with the license terms. According to this, I am not allowed to provide a pre-built image based on WinPE.
 That is the reason why every developer has to create his own ISO image. The internal use of this image (within the own team) should then not be a problem.
 
