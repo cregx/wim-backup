@@ -92,21 +92,23 @@ MakeWinPEMedia.cmd /iso C:\temp\media C:\temp\wim-backup-100.iso
 11. After having created the **WinPE-ISO** file, we can now use [Rufus](https://rufus.ie/) to transfer it to a **USB flash drive** to boot from and create a WIM-based backup or restore an existing one.
 
 <p align="center" width="100%">
-<img alt="rufus-create-bootable-drive" src="https://user-images.githubusercontent.com/14788832/208671977-82813a19-1fb7-4526-9e0b-263ab906aa79.PNG" width="30%" height="30%" />
+<img alt="rufus-create-bootable-drive" src="https://user-images.githubusercontent.com/14788832/208671977-82813a19-1fb7-4526-9e0b-263ab906aa79.PNG" width="50%" height="50%" />
 
 ## WIM-Backup in action
 
 The animation below shows WIM-Backup in action.
 
-
+<p align="center" width="100%">
+<img alt="wim-backup-animation-optimized" src="https://user-images.githubusercontent.com/14788832/209192953-c536cee4-1518-422d-b4d3-bfca5b6ee420.gif" width="75%" height="75%" />
+</p>
 
 ## FAQ
 
-❓ How much time should I expect to spend trying out the solution in my environment?
+### :question: How much time should I expect to spend trying out the solution in my environment?
 
 It is very difficult to give a general answer to this question. I estimate the time required to work through the instruction steps at around 30 to 60 minutes.
 
-❓ Why is no bootable, i.e. ready-to-use ISO image incl. the WIM backup solution offered?
+### :question: Why is no bootable, i.e. ready-to-use ISO image incl. the WIM backup solution offered?
 
 The issue is with the license terms. According to this, I am not allowed to provide a pre-built image based on WinPE.
 That is the reason why every developer has to create his own ISO image. The internal use of this image (within the own team) should then not be a problem.
