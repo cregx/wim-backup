@@ -12,7 +12,11 @@ The UI application "WIM-Backup" offers the possibility to create backups of hard
 
 WIM-Backup is a Win32 application created in (Microsoft) C and Visual Studio 2010. Of course, you can also compile the project using a newer version of Visual Studio, such as 2019, or you can use an already compiled release version.
 
-## The story behind WIM-Backup
+## The advantage of WIM-Backup
+
+WIM-Backup offers a free backup option for a Windows-based system. So you don't always need a commercial software.
+
+## The story behind the solution
 
 In the process of troubleshooting and fixing bugs on Windows 10-based systems, I repeatedly had to perform new installations of the operating system. This process proved to be very time-consuming in some cases. So I came up with the idea of backing up the Windows image so that it could be restored without much effort if necessary. This was the birth of WIM-Backup.
 
