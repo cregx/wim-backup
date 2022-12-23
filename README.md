@@ -17,16 +17,16 @@ WIM-Backup is a Win32 application created in (Microsoft) C and Visual Studio 201
 In the process of troubleshooting and fixing bugs on Windows 10-based systems, I repeatedly had to perform new installations of the operating system. This process proved to be very time-consuming in some cases. So I came up with the idea of backing up the Windows image so that it could be restored without much effort if necessary. This was the birth of WIM-Backup.
 
 <p align="center" width="100%">
-<img alt="wim-backup UI" src="https://user-images.githubusercontent.com/14788832/208285320-7b9b63a8-2d20-41b7-98e7-139b15d1b47d.png" width="50%" height="50%" />
+<img alt="wim-backup UI" src="https://user-images.githubusercontent.com/14788832/209359753-596622b0-87df-4282-abc5-4d4521f179a0.png" width="50%" height="50%" />
 </p>
 
 #### Components of the solution
 The solution consists of the following four components:
 
-- **wimbckup.exe**: GUI-based application of the wim-backup solution
+- **wimbckup.exe**: GUI-based application of the WIM-Backup solution
 - **action.bat**: batch script responsible for executing the backup (creating the WIM file) and restoring the system from a WIM file
 - **diskpart.txt**: parameter file with instructions for diskpart, which is needed for the restore process
-- **winpeshl.ini**: template file for the execution of wim-backup (wimbckup.exe) within the WinPE environment
+- **winpeshl.ini**: template file for the execution of WIM-Backup (wimbckup.exe) within the WinPE environment
 
 #### Rough flowchart
 
@@ -36,13 +36,13 @@ The following sketch roughly illustrates the essential relationships.
 <img alt="wim-backup rough flowchar" src="https://user-images.githubusercontent.com/14788832/208229659-e2b77a70-f128-4320-a91e-1e2d8ac69626.png" width="70%" height="70%" />
 </p>
 
-### How to use wim-backup (step-by-step instructions)
+### How to use WIM-Backup (step-by-step instructions)
 
 > The instructions described below are necessary because the solution requires the use of a WinPE-based boot medium. However, this must not be made available for licensing reasons. 
 
 > In short: I am not allowed to provide a bootable ISO file with the solution. You will have to create it yourself.
 
-1. [Download](https://github.com/cregx/wim-backup/releases) a current release version of **wim-backup** (or compile your own customised version).
+1. [Download](https://github.com/cregx/wim-backup/releases) a current release version of **WIM-Backup** (or compile your own customised version).
 2. You will need the Deployment and Imaging Tools from Microsoft. These can be found in the [Windows ADK](https://learn.microsoft.com/en-us/windows-hardware/get-started/adk-install) (Windows Assessment and Deployment Kit). Be sure to download the appropriate ADK version for your development environment (your Windows version). Make sure that you have selected the **Deployment Tools** in the features.
 <p align="center" width="100%">
 <img alt="adk-installation-screenshot" src="https://user-images.githubusercontent.com/14788832/208288059-db11b50d-09d8-4fab-9339-f8a2c17ce7ab.PNG" width="60%" height="60%" />
@@ -113,7 +113,7 @@ It is very difficult to give a general answer to this question. I estimate the t
 The issue is with the license terms. According to this, I am not allowed to provide a pre-built image based on WinPE.
 That is the reason why every developer has to create his own ISO image. The internal use of this image (within the own team) should then not be a problem.
 
-### :question: Are there any known limitations to using WIM backup?
+### :question: Are there any known limitations to using WIM-Backup?
 
 Yes, the list below shows the currently known restrictions:
 
