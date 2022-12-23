@@ -39,7 +39,7 @@
 #include <Shlwapi.h>				// e.g. For example for shortening long paths. Needed: Shlwapi.lib static linked.
 #include <strsafe.h>				// e.g. Safe string copy
 #include <ShellAPI.h>				// e.g. SHELLEXECUTEINFO
-#include <io.h>						// e.g. _access_s (file exists)
+#include <io.h>					// e.g. _access_s (file exists)
 #include <Shobjidl.h>				// COM objects
 #include <Objbase.h>
 
@@ -88,20 +88,20 @@ void GetDiskSpaces(LPCTSTR, LPTSTR, DWORD);
 
 // Globals
 static OPENFILENAME ofn;
-static TCHAR g_szRecFileName[MAX_PATH];				// Full path name of the recovery file.
-static TCHAR g_szRecTitleName[MAX_PATH];			// Name of the recovery file.
+static TCHAR g_szRecFileName[MAX_PATH];			// Full path name of the recovery file.
+static TCHAR g_szRecTitleName[MAX_PATH];		// Name of the recovery file.
 static TCHAR g_szRecFileNameShortened[MAX_PATH];	// Full path shortened name of the recovery file (e. g. C:\Data\...\recovery.wim)
-static TCHAR g_szBckFileName[MAX_PATH];				// Full path name of the backup file.(e. g. E:\Backups\...\2021_02_backup.wim)
-static TCHAR g_szBckTitleName[MAX_PATH];			// Name of the backup file.
+static TCHAR g_szBckFileName[MAX_PATH];			// Full path name of the backup file.(e. g. E:\Backups\...\2021_02_backup.wim)
+static TCHAR g_szBckTitleName[MAX_PATH];		// Name of the backup file.
 static TCHAR g_szBckFileNameShortened[MAX_PATH];	// Full path shortened name of the backup file.
-static TCHAR g_szBckVolumeName[16];					// Name of the volume whose data is to be backed up, e.g. C:\.
-const TCHAR * g_pstrExePath;						// Full path to the exe.
-const TCHAR * g_pstrBatchPath;						// Full path to the batch file.
-BOOL g_bIsRecoveryBtnSelected;						// Which radio button ist selected?
-action_type g_currentAction;						// Restore or backup action should be performed?
+static TCHAR g_szBckVolumeName[16];			// Name of the volume whose data is to be backed up, e.g. C:\.
+const TCHAR * g_pstrExePath;				// Full path to the exe.
+const TCHAR * g_pstrBatchPath;				// Full path to the batch file.
+BOOL g_bIsRecoveryBtnSelected;				// Which radio button ist selected?
+action_type g_currentAction;				// Restore or backup action should be performed?
 
 // Constants
-const LPCWSTR szAppVersion		= TEXT("App version 1.00 / 18 December 2022\nCopyright (c) 2022 Christoph Regner (https://github.com/cregx)\nWIM-Backup is licensed under the Apache License 2.0");
+const LPCWSTR szAppVersion	= TEXT("App version 1.00 / 18 December 2022\nCopyright (c) 2022 Christoph Regner (https://github.com/cregx)\nWIM-Backup is licensed under the Apache License 2.0");
 const LPCWSTR szRecoveryBtnText	= TEXT("Restore");
 const LPCWSTR szRunRecoveryText = TEXT("Restore process");
 const LPCWSTR szQuestRunRecText	= TEXT("Do you want to run the restore operation?");
@@ -117,8 +117,8 @@ const LPCWSTR szActionBackup	= TEXT("Backup");
 const LPCWSTR szActionRecovery	= TEXT("Restore");
 
 const DWORD RUN_ACTION_SHELLEX_FAILED	= 0xFFFFFFFFFFFFFFFF;		// dec => -1 (Function internal error, use GetLastError())
-const DWORD RUN_ACTION_SUCCESSFUL		= 0x400;					// dec => 1024 (Successful processing of the batch file.)
-const DWORD RUN_ACTION_CANCELLED		= 0xC000013A;				// dec => 3221225786 (Cancellation of the batch job by the user,
+const DWORD RUN_ACTION_SUCCESSFUL	= 0x400;			// dec => 1024 (Successful processing of the batch file.)
+const DWORD RUN_ACTION_CANCELLED	= 0xC000013A;			// dec => 3221225786 (Cancellation of the batch job by the user,
 																	//		  e.g. because the user has clicked the X button.)
 
 // Main function.
@@ -428,13 +428,13 @@ void InitializeFileDlg(HWND hwndOwner)
 	ofn.lpstrCustomFilter = NULL;
 	ofn.nMaxCustFilter = 0;
 	ofn.nFilterIndex = 0;
-	ofn.lpstrFile = NULL;			// Will be set when opening and closing the dialog.
-	ofn.nMaxFile = MAX_PATH;		// 260 Chars
+	ofn.lpstrFile = NULL;		// Will be set when opening and closing the dialog.
+	ofn.nMaxFile = MAX_PATH;	// 260 Chars
 	ofn.lpstrFileTitle = NULL;		
 	ofn.nMaxFileTitle = MAX_PATH;	// 260 Chars
 	ofn.lpstrInitialDir = NULL;
 	ofn.lpstrTitle = NULL;
-	ofn.Flags = 0;					// Will be set when opening and closing the dialog.
+	ofn.Flags = 0;			// Will be set when opening and closing the dialog.
 	ofn.nFileOffset = 0;
 	ofn.nFileExtension = 0;
 	ofn.lpstrDefExt = TEXT("wim");
