@@ -40,7 +40,18 @@ The following sketch roughly illustrates the essential relationships.
 <img alt="wim-backup rough flowchar" src="https://user-images.githubusercontent.com/14788832/208229659-e2b77a70-f128-4320-a91e-1e2d8ac69626.png" width="70%" height="70%" />
 </p>
 
-### How to use WIM-Backup (step-by-step instructions)
+### Brief summary
+
+- WIM-Backup always requires an external bootable media such as a USB flash drive.
+- From this drive WinPE is booted to perform a backup or restore to or from an external medium (e.g. a USB hard drive).
+- On the bootable USB flash drive the WinPE must be set up before (is documented illustrated in the readme).
+- After completion of the respective operation, a status message is displayed whether the operation was successful or failed.
+- After restoring a backup, you can boot normally from the destination drive.
+- Both the backup and restore process are relatively simple (not "rocket science").
+- To set up the solution, you need about 30 minutes time in the best case due to the necessary downloads (e .g. ADK)
+- Last but not least: it has a permissive license (non-proprietary) and is open source.
+
+## How to use WIM-Backup (step-by-step instructions)
 
 > The instructions described below are necessary because the solution requires the use of a WinPE-based boot medium. However, this must not be made available for licensing reasons. 
 
