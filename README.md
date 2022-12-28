@@ -128,6 +128,12 @@ It is very difficult to give a general answer to this question. I estimate the t
 The issue is with the license terms. According to this, I am not allowed to provide a pre-built image based on WinPE.
 That is the reason why every developer has to create his own ISO image. The internal use of this image (within the own team) should then not be a problem.
 
+### :question: How are errors that occurred during backup or restore reported?
+
+WIM-Backup uses the dism.log file to identify possible errors. To do this, this file is checked for the occurrence of the pattern "Error" and a general error message is issued after a backup/restore operation is completed.
+
+You can find the dism.log file under the following file path: *%systemdrive%\Tools\dism.log*. Here, the *%systemdrive%* environment variable in WinPE normally points to the x:\ drive.
+
 ### :question: Are there any known limitations to using WIM-Backup?
 
 Yes, the list below shows the currently known restrictions:
