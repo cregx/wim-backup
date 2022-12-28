@@ -8,7 +8,7 @@
 [![Github All Releases](https://img.shields.io/github/downloads/cregx/wim-backup/total.svg)](https://github.com/cregx/wim-backup/releases)
 [![Code-Signed](https://img.shields.io/badge/code--signed%20exe-Yes-green)](https://github.com/cregx/wim-backup/releases)
 
-The UI application "WIM-Backup" offers the possibility to create backups of hard disks (partitions) in a WinPE environment. The Windows Imaging Format (WIM) is used for this purpose.
+The UI application "WIM-Backup" offers the possibility to create offline backups of hard disks (partitions) in a WinPE environment. The Windows Imaging Format (WIM) is used for this purpose.
 
 WIM-Backup is a Win32 application created in (Microsoft) C and Visual Studio 2010. Of course, you can also compile the project using a newer version of Visual Studio, such as 2019, or you can use an already compiled release version.
 
@@ -134,6 +134,7 @@ Yes, the list below shows the currently known restrictions:
 
 - If you want to backup a BitLocker-encrypted drive, you must first stop active BitLocker protection (BDE) in Windows. However, this does not mean that you have to decrypt the encrypted drive first. Once you exit BDE protection and restart the PC to boot from WinPE into the solution, WIM-Backup can access the drive. However, if you forget this step, WIM-Backup will not recognize the BDE-encrypted drive.
 - During the restore process, you can restore an existing WIM backup image on the C: drive only. Restoring to other drives is not supported.
+- WIM-Backup can only create **offline backups**. Attempting to backup a system while it is running, that is, the operating system has booted properly, results in an error.
 
 ## Code of Conduct
 
