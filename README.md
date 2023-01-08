@@ -97,11 +97,11 @@ dism /mount-image /imagefile:C\Temp\media\media\sources\boot.wim /mountdir:C:\Te
 10. Finally, the mounted image must be **un-mounted** and the **WinPEMedia ISO file** must be created.
 
 ```
-dism /unmount-image /mountdir:C:\temp\media\mount /commit
+dism /unmount-image /mountdir:C:\Temp\media\mount /commit
 ...
 cd ..
 cd "Windows Preinstallation Environment"
-MakeWinPEMedia.cmd /iso C:\temp\media C:\temp\wim-backup-101.iso
+MakeWinPEMedia.cmd /iso C:\Temp\media C:\temp\wim-backup-101.iso
 ```
 
 11. After having created the **WinPE-ISO** file, we can now use [Rufus](https://rufus.ie/) to transfer it to a **USB flash drive** to boot from and create a WIM-based backup or restore an existing one.
