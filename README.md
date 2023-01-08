@@ -99,6 +99,8 @@ mkdir C:\Temp\media\mount\Tools
 9. You also need to copy the **winpkeshl.ini** file to **C:\Temp\media\mount\Windows\System32**.
 
 10. Finally, the mounted image must be **un-mounted** and the **WinPEMedia ISO file** must be created.
+  
+> Do not forget to close all windows/files/applications that are open on the mounted directory. Otherwise, DISM will complain that it cannot complete the unmounting process.  
 
 ```
 dism /unmount-image /mountdir:C:\Temp\media\mount /commit
