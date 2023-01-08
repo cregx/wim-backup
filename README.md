@@ -87,6 +87,10 @@ dism /mount-image /imagefile:C:\Temp\media\media\sources\boot.wim /mountdir:C:\T
 
 7. Create the folder **Tools** in the directory **C:\Temp\media\mount**.
 
+```
+mkdir C:\Temp\media\mount\Tools
+```
+
 8. Now copy the following release files into this folder:
 * **wimbckup.exe**
 * **action.bat**
