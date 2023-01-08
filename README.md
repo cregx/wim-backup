@@ -73,7 +73,7 @@ The following sketch roughly illustrates the essential relationships.
 5. Copy the **amd64** directory to a folder that does not yet exist, for example **C:\temp\media**.
 
 ```
-copype amd64 c:\temp\media
+copype amd64 c:\Temp\media
 ```
 
 <p align="center" width="100%">
@@ -82,7 +82,7 @@ copype amd64 c:\temp\media
 6. Then mount the **boot.wim** image from the previously copied **amd64** directory to the newly created **c:\temp\media\mount** directory.
 
 ```
-dism /mount-image /imagefile:C\temp\media\media\source\boot.wim /mountdir:C:\temp\media\mount /index:1
+dism /mount-image /imagefile:C\Temp\media\media\sources\boot.wim /mountdir:C:\Temp\media\mount /index:1
 ```
 
 7. Create the folder **Tools** in the directory **C:\Temp\media\mount**.
