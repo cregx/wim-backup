@@ -70,7 +70,7 @@ The following sketch roughly illustrates the essential relationships.
 
 4. Assuming that the processing of the previous steps was successful, the next step is to create a WinPE-enabled boot medium. This contains the WIM-Backup solution. To do this, start the **Deployment and Imaging Tools Environment** with **administrative** privileges.
 
-5. Copy the **amd64** directory to a folder that **does not yet exist**, for example **C:\temp\media**.
+5. Copy the **amd64** directory to a folder that **does not yet exist**, for example **C:\Temp\media**.
 
 ```
 copype amd64 c:\Temp\media
