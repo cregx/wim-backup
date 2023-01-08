@@ -98,7 +98,9 @@ dism /mount-image /imagefile:C\Temp\media\media\sources\boot.wim /mountdir:C:\Te
 
 ```
 dism /unmount-image /mountdir:C:\Temp\media\mount /commit
-...
+```
+
+```
 cd ..
 cd "Windows Preinstallation Environment"
 MakeWinPEMedia.cmd /iso C:\Temp\media C:\temp\wim-backup-101.iso
