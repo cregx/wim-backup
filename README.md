@@ -21,7 +21,7 @@ WIM-Backup offers a free backup option for a Windows-based system. So you don't 
 In the process of troubleshooting and fixing bugs on Windows 10-based systems, I repeatedly had to perform new installations of the operating system. This process proved to be very time-consuming in some cases. So I came up with the idea of backing up the Windows image so that it could be restored without much effort if necessary. This was the birth of WIM-Backup.
 
 <p align="center" width="100%">
-<img alt="wim-backup UI" src="https://user-images.githubusercontent.com/14788832/209359753-596622b0-87df-4282-abc5-4d4521f179a0.png" width="50%" height="50%" />
+<img alt="wim-backup UI" src="https://user-images.githubusercontent.com/14788832/212529178-de7ed094-d73a-482f-9cc9-3912ddc8ed8d.PNG" width="50%" height="50%" />
 </p>
 
 #### Components of the solution
