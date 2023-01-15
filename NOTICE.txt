@@ -1,10 +1,10 @@
 The purpose of this file is to disclose information related to copyright ownership and this project.
 
-1) 12-2022
+1) 01-2023
    The application was developed by Christoph Regner.
    On the web: https://www.cregx.de
  
-   Copyright 2022 Christoph Regner
+   Copyright 2023 Christoph Regner
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ The purpose of this file is to disclose information related to copyright ownersh
  
    For further information, please refer to the attached LICENSE.md
  
-2) 12-2022
+2) 01-2023
    This application is based on a skeleton code from
    https://www.codeproject.com/Articles/227831/A-Dialog-Based-Win32-C-Program-Step-by-Step
    by (c) Rodrigo Cesar de Freitas Dias https://creativecommons.org/licenses/publicdomain/

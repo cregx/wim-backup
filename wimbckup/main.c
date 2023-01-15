@@ -5,7 +5,7 @@
  * The application was developed by Christoph Regner.
  * On the web: https://www.cregx.de
  * 
- * Copyright 2022 Christoph Regner
+ * Copyright 2023 Christoph Regner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,12 @@
  * This application is based on a skeleton code from
  * https://www.codeproject.com/Articles/227831/A-Dialog-Based-Win32-C-Program-Step-by-Step
  * by (c) Rodrigo Cesar de Freitas Dias https://creativecommons.org/licenses/publicdomain/
+ **/
+
+/**
+ * Important compilation note: This application must be compiled with the /MT option.
+ * This will embed all the required parts of the C runtime library in the output file (Release / x64).
+ * See for this (in VS 2010) under: Property pages / Configuration Properties / C/C++ / Code Generation / Runtime Library / Multi-Threaded (/MT).
  **/
 
 #define WIN32_LEAN_AND_MEAN
@@ -71,6 +77,7 @@ void onClick_RadioRecovery(HWND);
 void onClick_RadioBackup(HWND);
 void onClick_SelectRecoveryFile(HWND, PTSTR, PTSTR, PTSTR, action_type);
 void onClick_SelectBackupFile(HWND, PTSTR, PTSTR, PTSTR, action_type);
+void onClick_ButtonLog(HWND);
 void onClick_ButtonCmd(void);
 void SelectFile(HWND, PTSTR, PTSTR, PTSTR, action_type);
 void ShortenFilePath(HWND, PTSTR);
@@ -100,8 +107,10 @@ const TCHAR * g_pstrBatchPath;				// Full path to the batch file.
 BOOL g_bIsRecoveryBtnSelected;				// Which radio button ist selected?
 action_type g_currentAction;				// Restore or backup action should be performed?
 
-// Constants
-const LPCWSTR szAppVersion	= TEXT("App version 1.01 / 23 December 2022\nCopyright (c) 2022 Christoph Regner (https://github.com/cregx)\nWIM-Backup is licensed under the Apache License 2.0");
+// Don't forget to increase the version number in the resource file (wimbckup.rc).
+const LPCWSTR szAppVersion	= TEXT("App version 1.0.2 / 13 January 2023\nCopyright (c) 2023 Christoph Regner (https://github.com/cregx)\nWIM-Backup is licensed under the Apache License 2.0");
+
+// Text constants
 const LPCWSTR szRecoveryBtnText	= TEXT("Restore");
 const LPCWSTR szRunRecoveryText = TEXT("Restore process");
 const LPCWSTR szQuestRunRecText	= TEXT("Do you want to run the restore operation?");
@@ -109,12 +118,15 @@ const LPCWSTR szBackupBtnText	= TEXT("Backup");
 const LPCWSTR szRunBackupText	= TEXT("Backup process");
 const LPCWSTR szQuestRunBckText = TEXT("Do you want to run the backup operation?");
 const LPCWSTR szBatchFileName	= TEXT("action.bat");
+const LPCWSTR szDismLogFilePath = TEXT("%systemdrive%\\Tools\\dism.log");
 const LPCWSTR szActionBckFin	= TEXT("The operation was completed successfully.\n\nThe backup was made to the following file: %s.\nCheck any errors that may have occurred in the log file.");
 const LPCWSTR szActionRecFin	= TEXT("The process has been completed. Check any errors that may have occurred in the log file.");
 const LPCWSTR szActionBckFailed = TEXT("The operation has failed. Check possible errors in the log file.");
 const LPCWSTR szActionFailed	= TEXT("The operation has failed.\n\nError code: %lu\nCheck the log file for the cause of the error.");
 const LPCWSTR szActionBackup	= TEXT("Backup");
 const LPCWSTR szActionRecovery	= TEXT("Restore");
+const LPCWSTR szFileNotFound	= TEXT("The file %s could not be found.");
+const LPCWSTR szInfo			= TEXT("Information");
 
 const DWORD RUN_ACTION_SHELLEX_FAILED	= 0xFFFFFFFFFFFFFFFF;		// dec => -1 (Function internal error, use GetLastError())
 const DWORD RUN_ACTION_SUCCESSFUL	= 0x400;			// dec => 1024 (Successful processing of the batch file.)
@@ -127,6 +139,13 @@ int WINAPI _tWinMain(HINSTANCE hInst, HINSTANCE h0, LPTSTR lpCmdLine, int nCmdSh
   HWND hDlg;
   MSG msg;
   BOOL ret;
+
+  /**
+   * For the correct execution of GetSaveFileName() (COM) we need CoInitializeEx()
+   * when starting the application and CoUninitialize() when exiting.
+   * See also under: https://learn.microsoft.com/en-us/troubleshoot/windows/win32/shell-functions-multithreaded-apartment
+   **/
+  HRESULT hrCoInitializeEx = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
   InitCommonControls();
   hDlg = CreateDialogParam(hInst, MAKEINTRESOURCE(IDD_DIALOG), 0, DialogProc, 0);
@@ -141,6 +160,8 @@ int WINAPI _tWinMain(HINSTANCE hInst, HINSTANCE h0, LPTSTR lpCmdLine, int nCmdSh
       DispatchMessage(&msg);
     }
   }
+  
+  CoUninitialize();
   return 0;
 }
 
@@ -150,7 +171,7 @@ int WINAPI _tWinMain(HINSTANCE hInst, HINSTANCE h0, LPTSTR lpCmdLine, int nCmdSh
 INT_PTR CALLBACK DialogProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	static HBRUSH hBrushStatic;
-	static COLORREF colorRef[1] = { RGB(255, 0, 0) };
+	static COLORREF colorRef[] = { RGB(255, 0, 0), RGB(0, 0, 139) };		// red, darkblue
 
 	switch(uMsg)
 	{
@@ -181,6 +202,10 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				case IDC_RADIO_BACKUP:
 					onClick_RadioBackup(hDlg);
 					return TRUE;
+				// Click on the Log button.
+				case IDC_BUTTON_LOG:
+					onClick_ButtonLog(hDlg);
+					return TRUE;
 				// Click on the CMD button.
 				case IDC_BUTTON_CMD:
 					onClick_ButtonCmd();
@@ -203,15 +228,25 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 		case WM_CTLCOLORSTATIC:
+			// I use a system brush (GetStockObject()) to display hint texts in a specific color.
+			// This does not then have to be made explicitly free (DeleteObject()).
+			// See also under: https://learn.microsoft.com/de-de/windows/win32/controls/wm-ctlcolorstatic
+			
 			// Color text note for warnings in red.
 			if ((HWND) lParam == GetDlgItem(hDlg, IDC_STATIC_INFO_BACKUP) || (HWND) lParam == GetDlgItem(hDlg, IDC_STATIC_INFO_RECOVERY))
-			{
-				// I use a system brush (GetStockObject()) to display the note text in the color red.
-				// This does not then have to be made explicitly free (DeleteObject()).
-				// See also under: https://learn.microsoft.com/de-de/windows/win32/controls/wm-ctlcolorstatic
+			{	
 				hBrushStatic = (HBRUSH) GetStockObject(HOLLOW_BRUSH);
 				SetBkMode((HDC) wParam, TRANSPARENT);
 				SetTextColor((HDC) wParam, colorRef[0]);
+				return (INT_PTR) hBrushStatic;
+			}
+
+			// Colored text note for information that basically requires some attention, in blue.
+			if ((HWND) lParam == GetDlgItem(hDlg, IDC_STATIC_VOLUME_NAME_VALUE) || (HWND) lParam == GetDlgItem(hDlg, IDC_STATIC_VOLUME_SPACE_VALUE))
+			{
+				hBrushStatic = (HBRUSH) GetStockObject(HOLLOW_BRUSH);
+				SetBkMode((HDC) wParam, TRANSPARENT);
+				SetTextColor((HDC) wParam, colorRef[1]);
 				return (INT_PTR) hBrushStatic;
 			}
 			break;
@@ -365,7 +400,7 @@ void onAction(HWND hDlg, action_type action)
 		if (MessageBox(hDlg, szQuestRunRecText, szRunRecoveryText, MB_ICONQUESTION | MB_OKCANCEL) == IDOK)
 		{
 			// Run action and wait until the task is finished.
-			rcRunAction = ActionEx(g_pstrBatchPath, TEXT("%s %s"), szActionRecovery, g_szRecFileName);
+			rcRunAction = ActionEx(g_pstrBatchPath, TEXT("%s %s %s"), szActionRecovery, g_szRecFileName, szDismLogFilePath);
 
 			if (rcRunAction == RUN_ACTION_SUCCESSFUL)
 			{
@@ -386,7 +421,7 @@ void onAction(HWND hDlg, action_type action)
 		if (MessageBox(hDlg, szQuestRunBckText, szRunBackupText, MB_ICONQUESTION | MB_OKCANCEL) == IDOK)
 		{
 			// Run action and wait until the task is finished.
-			rcRunAction = ActionEx(g_pstrBatchPath, TEXT("%s %s %s"), szActionBackup, g_szBckFileName, g_szBckVolumeName);
+			rcRunAction = ActionEx(g_pstrBatchPath, TEXT("%s %s %s %s"), szActionBackup, g_szBckFileName, szDismLogFilePath, g_szBckVolumeName);
 			
 			if (rcRunAction == RUN_ACTION_SUCCESSFUL)
 			{
@@ -517,6 +552,99 @@ void onClick_SelectRecoveryFile(HWND hwnd, PTSTR pstrFileName, PTSTR pstrFileNam
 void onClick_SelectBackupFile(HWND hwnd, PTSTR pstrFileName, PTSTR pstrFileNameShortened, PTSTR pstrTitleName, action_type action)
 {
 	SelectFile(hwnd, pstrFileName, pstrFileNameShortened, pstrTitleName, action);
+}
+
+/**
+ * An event that occurs when the user clicks on the Log button.
+ */
+void onClick_ButtonLog(HWND hwnd)
+{
+	#define MAX_BUFFER 512
+
+	TCHAR szBuffer[MAX_BUFFER];
+	const TCHAR * pLog = NULL;				// Helper pointer to the full path of the original DISM log file, e.g. "%systemdrive%\Tools\dism.log".
+	TCHAR * pEnv = NULL;					// Helper pointer to the final obtained %-cleaned and zero terminated environment variable, e.g. "systemdrive".
+	TCHAR * pszEnv = NULL;					// String with the name of the environment variable (null terminated).
+	TCHAR * pszEnvVal = NULL;				// String with the value of the enviornment variable (null terminated).
+	TCHAR * pszNewDismLogFilePath = NULL;	// String with the newly composed full path to the log file (null terminated).
+		
+	// Allocate needed memory. Don't forget to free the memory!
+	pszEnv = (TCHAR *) calloc(MAX_BUFFER * 2, sizeof(TCHAR));
+	pszEnvVal = (TCHAR *) calloc(MAX_BUFFER, sizeof(TCHAR));
+	pszNewDismLogFilePath = (TCHAR *) calloc(MAX_BUFFER * 2, sizeof(TCHAR));
+	
+	// Check if pointers are valid. For allocated memory, whether allocation was possible.
+	if (szDismLogFilePath == NULL || pszEnv == NULL || pszEnvVal == NULL || pszNewDismLogFilePath == NULL)
+	{
+		return;
+	}
+
+	/**
+	 * Traversing the full path to the log file, checking if it contains an environment variable,
+	 * then extracting it to determine its actual value.
+	 **/
+	pLog = szDismLogFilePath;
+	pEnv = pszEnv;
+
+	while (*pLog != '\0')
+	{
+		if (*pLog == '%')
+		{
+			pLog++;
+			while(*pLog != '%')
+			{
+				*pEnv++ = *pLog++;
+			}
+			*pEnv = '\0';
+		}
+		pLog++;
+		break;
+	}
+
+	// Get the value of the environment variable.
+	// If the function fails, the return value is zero
+	if (GetEnvironmentVariable(pszEnv, pszEnvVal, MAX_BUFFER) == 0)
+	{
+		// Either the buffer is too small or the environment variable is not present.
+		// Build a new complete path to the log file.
+		_stprintf_s(pszNewDismLogFilePath, MAX_BUFFER * 2, TEXT("%s"), szDismLogFilePath, pLog);
+	}
+	else
+	{
+		// Build a new complete path to the log file.
+		_stprintf_s(pszNewDismLogFilePath, MAX_BUFFER * 2, TEXT("%s%s"), pszEnvVal, pLog);
+	}
+	
+	// Check if the log file is present.
+	if (FileExists(pszNewDismLogFilePath) == FALSE)
+	{
+		_stprintf_s(szBuffer, MAX_BUFFER, szFileNotFound, pszNewDismLogFilePath);
+		MessageBox(hwnd, szBuffer, szInfo, MB_ICONINFORMATION | MB_OK);
+	}
+	else
+	{
+		// Launching Notepad with the current log file.
+		ShellExecute(NULL, TEXT("open"), pszNewDismLogFilePath , NULL, NULL, SW_SHOWNORMAL);
+	}	
+	
+	// Release memory that is no longer needed.
+	if (pszEnv != NULL)
+	{
+		free((void *) pszEnv);
+		pszEnv = NULL;
+	}
+
+	if (pszEnvVal != NULL)
+	{
+		free((void *) pszEnvVal);
+		pszEnvVal = NULL;
+	}
+
+	if (pszNewDismLogFilePath != NULL)
+	{
+		free((void *) pszNewDismLogFilePath);
+		pszNewDismLogFilePath = NULL;
+	}
 }
 
 /**

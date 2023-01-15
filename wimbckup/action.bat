@@ -1,10 +1,10 @@
 @echo off
 REM
 REM This script is responsible for performing a data backup and a data restore.
-REM Version 1.0
-REM December 2022
+REM Version 1.1
+REM January 2023
 REM
-REM Copyright 2022 Christoph Regner
+REM Copyright 2023 Christoph Regner
 REM
 REM Licensed under the Apache License, Version 2.0 (the "License");
 REM you may not use this file except in compliance with the License.
@@ -22,8 +22,11 @@ REM Parameter description:
 REM  Used parameter: %1
 REM   Represents one of the action types:  Backup | Recovery
 REM  Used parameter: %2
-REM   Returns the full path to the backup | data recovery file (*.wim).
-REM  Used parameter: %3 (for backup only)
+REM   Contains the full path to the backup | data recovery file (*.wim)
+REM  Used parameter: %3
+REM   Contains the full path to the DISM log file. This file logs possible errors that occurred during backup or recovery.
+REM   Basically, this file is located under this path: %systemdrive%\Tools\dism.log
+REM  Used parameter: %4 (for backup only)
 REM   Represents the volume that is to be backed up, e.g. C:\
 REM 
 REM Return values:
@@ -39,18 +42,18 @@ REM  are reserved for internal purposes and therefore must not be used.
 SET /A E_SUCCESS=0x400
 SET /A errno^|=%E_SUCCESS%
  
-echo Operation: %1 %2 %3
+echo Operation: %1 %2 %3 %4
 
 echo Systemdrive:
 cd %systemdrive%
 
 REM Path to the Logfile.
-SET LOGFILE=%systemdrive%\Tools\dism.log
+SET LOGFILE="%3"
 echo Logfile: %LOGFILE%
 
 REM Start backup or data recovery.
 if "%1" == "Backup" (
- dism /Capture-Image /ImageFile:"%2" /CaptureDir:%3 /Name:"WinOS" /ea /LogPath:%LOGFILE% /LogLevel:1
+ dism /Capture-Image /ImageFile:"%2" /CaptureDir:%4 /Name:"WinOS" /ea /LogPath:%LOGFILE% /LogLevel:1
  
  REM Check if an error occurred during the execution of dism.
  REM In this case, the log file contains entries with the term "Error". 
