@@ -123,6 +123,8 @@ MakeWinPEMedia.cmd /iso C:\Temp\media C:\temp\wim-backup-102.iso
 
 The following animation shows WIM-Backup in action when creating a backup.
 
+> More information on how to use WIM-Backup can be found in the [Wiki](https://github.com/cregx/wim-backup/wiki).
+
 <p align="center" width="100%">
 <img alt="wim-backup-animation-optimized" src="https://user-images.githubusercontent.com/14788832/209192953-c536cee4-1518-422d-b4d3-bfca5b6ee420.gif" width="75%" height="75%" />
 </p>
