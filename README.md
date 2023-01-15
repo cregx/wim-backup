@@ -112,7 +112,7 @@ cd "Windows Preinstallation Environment"
 MakeWinPEMedia.cmd /iso C:\Temp\media C:\temp\wim-backup-102.iso
 ```
 
-11. After having created the **WinPE-ISO** file, we can now use [Rufus](https://rufus.ie/) to transfer it to a **USB flash drive** to boot from and create a WIM-based backup or restore an existing one.
+11. After having created the **WinPE-ISO** file, we can now use **Rufus** [on Github](https://github.com/pbatard/rufus) / [Official Website](https://rufus.ie/) to transfer it to a **USB flash drive** to boot from and create a WIM-based backup or restore an existing one.
 
 <p align="center" width="100%">
 <img alt="rufus-create-bootable-drive" src="https://user-images.githubusercontent.com/14788832/208671977-82813a19-1fb7-4526-9e0b-263ab906aa79.PNG" width="50%" height="50%" />
