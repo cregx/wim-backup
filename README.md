@@ -72,6 +72,8 @@ The following sketch roughly illustrates the essential relationships.
 
 5. Copy the **amd64** directory to a folder that **does not yet exist**, for example **C:\Temp\media**.
 
+> Tip: Copy the desired commands to the clipboard (to the right of the respective command), this way you can speed up the creation process considerably.
+
 ```
 copype amd64 c:\Temp\media
 ```
