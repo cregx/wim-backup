@@ -157,6 +157,7 @@ Yes, the list below shows the currently known restrictions:
 - If you want to backup a BitLocker-encrypted drive, you must first stop active BitLocker protection (BDE) in Windows. However, this does not mean that you have to decrypt the encrypted drive first. Once you exit BDE protection and restart the PC to boot from WinPE into the solution, WIM-Backup can access the drive. However, if you forget this step, WIM-Backup will not recognize the BDE-encrypted drive.
 - During the restore process, you can restore an existing WIM backup image on the C: drive only. Restoring to other drives is not supported.
 - WIM-Backup can only create **offline backups**. Attempting to backup a system while it is running, that is, the operating system has booted properly, results in an error.
+- An overview of the operating systems tested with WIM-Backup can be found in the [Wiki](https://github.com/cregx/wim-backup/wiki/Requirements#tested-windows-versions).
 
 ## Stargazers, Forkers & other users
 
