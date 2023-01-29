@@ -7,6 +7,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/cregx/wim-backup)](https://github.com/cregx/wim-backup/stargazers)
 [![Github All Releases](https://img.shields.io/github/downloads/cregx/wim-backup/total.svg)](https://github.com/cregx/wim-backup/releases)
 [![Code-Signed](https://img.shields.io/badge/code--signed%20exe-Yes-green)](https://github.com/cregx/wim-backup/releases)
+[![Wiki available](https://img.shields.io/badge/wiki-Yes-green)](https://github.com/cregx/wim-backup/wiki)
 
 The UI application "WIM-Backup" offers the possibility to create offline backups of Windows partitions (e.g. hard disk C:) in a WinPE environment. The Windows Imaging Format (WIM) is used for this purpose.
 
