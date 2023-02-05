@@ -108,7 +108,7 @@ BOOL g_bIsRecoveryBtnSelected;				// Which radio button ist selected?
 action_type g_currentAction;				// Restore or backup action should be performed?
 
 // Don't forget to increase the version number in the resource file (wimbckup.rc).
-const LPCWSTR szAppVersion	= TEXT("App version 1.0.2 / 13 January 2023\nCopyright (c) 2023 Christoph Regner (https://github.com/cregx)\nWIM-Backup is licensed under the Apache License 2.0");
+const LPCWSTR szAppVersion	= TEXT("App version 1.0.3 / 4th February 2023\nCopyright (c) 2023 Christoph Regner (https://github.com/cregx)\nWIM-Backup is licensed under the Apache License 2.0");
 
 // Text constants
 const LPCWSTR szRecoveryBtnText	= TEXT("Restore");
@@ -218,6 +218,9 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 						case CBN_SELCHANGE:
 							// wParam: The LOWORD contains the control identifier of the combo box.
 							onChange_ComboBoxDrives(hDlg, LOWORD(wParam));
+							// Bug fix #3:
+							// Forces the entire dialog to be redrawn. If you omit it, the information about the selected drive will not be redrawn properly.
+							InvalidateRect(hDlg, NULL, TRUE);
 							return TRUE;
 					}
 					break;
@@ -231,11 +234,11 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			// I use a system brush (GetStockObject()) to display hint texts in a specific color.
 			// This does not then have to be made explicitly free (DeleteObject()).
 			// See also under: https://learn.microsoft.com/de-de/windows/win32/controls/wm-ctlcolorstatic
-			
+		
 			// Color text note for warnings in red.
 			if ((HWND) lParam == GetDlgItem(hDlg, IDC_STATIC_INFO_BACKUP) || (HWND) lParam == GetDlgItem(hDlg, IDC_STATIC_INFO_RECOVERY))
 			{	
-				hBrushStatic = (HBRUSH) GetStockObject(HOLLOW_BRUSH);
+				hBrushStatic = (HBRUSH) GetStockObject(HOLLOW_BRUSH);	
 				SetBkMode((HDC) wParam, TRANSPARENT);
 				SetTextColor((HDC) wParam, colorRef[0]);
 				return (INT_PTR) hBrushStatic;
@@ -269,6 +272,10 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			DestroyWindow(hDlg);
 			return TRUE;
 		case WM_DESTROY:
+			if (hBrushStatic != NULL)
+			{
+				DeleteObject(hBrushStatic);
+			}
 			PostQuitMessage(0);
 			return TRUE;
 	}
