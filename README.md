@@ -3,11 +3,12 @@
 [![Visual Studio](https://badgen.net/badge/icon/visualstudio?icon=visualstudio&label)](https://visualstudio.microsoft.com)
 [![GitHub issues](https://img.shields.io/github/issues/cregx/wim-backup)](https://github.com/cregx/wim-backup/issues)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed/cregx/wim-backup)](https://github.com/cregx/wim-backup/issues?q=is%3Aissue+is%3Aclosed)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/cregx/wim-backup)](https://github.com/cregx/wim-backup/releases)
-[![GitHub stars](https://img.shields.io/github/stars/cregx/wim-backup)](https://github.com/cregx/wim-backup/stargazers)
-[![Github All Releases](https://img.shields.io/github/downloads/cregx/wim-backup/total.svg)](https://github.com/cregx/wim-backup/releases)
 [![Code-Signed](https://img.shields.io/badge/code--signed%20exe-Yes-green)](https://github.com/cregx/wim-backup/releases)
 [![Wiki available](https://img.shields.io/badge/wiki-Yes-green)](https://github.com/cregx/wim-backup/wiki)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/cregx/wim-backup)](https://github.com/cregx/wim-backup/releases)
+[![Commits since release](https://img.shields.io/github/commits-since/cregx/wim-backup/latest/main)](https://github.com/cregx/wim-backup/commits/main)
+[![GitHub stars](https://img.shields.io/github/stars/cregx/wim-backup)](https://github.com/cregx/wim-backup/stargazers)
+[![Github All Releases](https://img.shields.io/github/downloads/cregx/wim-backup/total.svg)](https://github.com/cregx/wim-backup/releases)
 
 The UI application "WIM-Backup" offers the possibility to create offline backups of Windows partitions (e.g. hard disk C:) in a WinPE environment. The Windows Imaging Format (WIM) is used for this purpose.
 
