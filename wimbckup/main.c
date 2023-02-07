@@ -108,7 +108,7 @@ BOOL g_bIsRecoveryBtnSelected;				// Which radio button ist selected?
 action_type g_currentAction;				// Restore or backup action should be performed?
 
 // Don't forget to increase the version number in the resource file (wimbckup.rc).
-const LPCWSTR szAppVersion	= TEXT("App version 1.0.3 / 4th February 2023\nCopyright (c) 2023 Christoph Regner (https://github.com/cregx)\nWIM-Backup is licensed under the Apache License 2.0");
+const LPCWSTR szAppVersion	= TEXT("App version 1.0.3 / 7th February 2023\nCopyright (c) 2023 Christoph Regner (https://github.com/cregx)\nWIM-Backup is licensed under the Apache License 2.0");
 
 // Text constants
 const LPCWSTR szRecoveryBtnText	= TEXT("Restore");
