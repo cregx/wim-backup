@@ -42,5 +42,11 @@
     <None Include="winpeshl.ini">
       <Filter>WinPE</Filter>
     </None>
+    <None Include="assets\refresh.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\app.ico">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

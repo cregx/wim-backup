@@ -90,10 +90,12 @@ DWORD ActionEx(const TCHAR *, TCHAR *, ...);
 BOOL FileExists(const wchar_t *);
 void onChange_ComboBoxDrives(HWND, WORD);
 void InitComboBox_LogicalDrives(HWND, HWND, HWND);
-void GetVolumeInfo(LPCTSTR, LPTSTR, DWORD);
+DWORD GetVolumeInfo(LPCTSTR, LPTSTR, DWORD);
 void GetDiskSpaces(LPCTSTR, LPTSTR, DWORD);
+HWND CreateToolTip(HWND, int, LPTSTR);
 
 // Globals
+static HINSTANCE g_hInstance;
 static OPENFILENAME ofn;
 static TCHAR g_szRecFileName[MAX_PATH];			// Full path name of the recovery file.
 static TCHAR g_szRecTitleName[MAX_PATH];		// Name of the recovery file.
@@ -106,9 +108,11 @@ const TCHAR * g_pstrExePath;				// Full path to the exe.
 const TCHAR * g_pstrBatchPath;				// Full path to the batch file.
 BOOL g_bIsRecoveryBtnSelected;				// Which radio button ist selected?
 action_type g_currentAction;				// Restore or backup action should be performed?
+BOOL g_BackupDriveFailure;					// No information is available about the drive being backed up.
+BOOL g_fileSelected;						// Was the backup/restore file selected.
 
 // Don't forget to increase the version number in the resource file (wimbckup.rc).
-const LPCWSTR szAppVersion	= TEXT("App version 1.0.3 / 7th February 2023\nCopyright (c) 2023 Christoph Regner (https://github.com/cregx)\nWIM-Backup is licensed under the Apache License 2.0");
+const LPCWSTR szAppVersion	= TEXT("App version 1.1.4 / 12th February 2023\nCopyright (c) 2023 Christoph Regner (https://github.com/cregx)\nWIM-Backup is licensed under the Apache License 2.0");
 
 // Text constants
 const LPCWSTR szRecoveryBtnText	= TEXT("Restore");
@@ -127,6 +131,7 @@ const LPCWSTR szActionBackup	= TEXT("Backup");
 const LPCWSTR szActionRecovery	= TEXT("Restore");
 const LPCWSTR szFileNotFound	= TEXT("The file %s could not be found.");
 const LPCWSTR szInfo			= TEXT("Information");
+const LPTSTR szTTRefreshDrives  = TEXT("Refresh list of drives");
 
 const DWORD RUN_ACTION_SHELLEX_FAILED	= 0xFFFFFFFFFFFFFFFF;		// dec => -1 (Function internal error, use GetLastError())
 const DWORD RUN_ACTION_SUCCESSFUL	= 0x400;			// dec => 1024 (Successful processing of the batch file.)
@@ -147,6 +152,7 @@ int WINAPI _tWinMain(HINSTANCE hInst, HINSTANCE h0, LPTSTR lpCmdLine, int nCmdSh
    **/
   HRESULT hrCoInitializeEx = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
+  g_hInstance = hInst;
   InitCommonControls();
   hDlg = CreateDialogParam(hInst, MAKEINTRESOURCE(IDD_DIALOG), 0, DialogProc, 0);
   ShowWindow(hDlg, nCmdShow);
@@ -193,6 +199,12 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				// Click on the select backup file button.
 				case IDC_BUTTON_SELECT_RECOVERY_FILE:
 					onClick_SelectBackupFile(hDlg, g_szRecFileName, g_szRecFileNameShortened, g_szRecTitleName, RECOVERY);
+					return TRUE;
+				case IDC_BUTTON_REFRESH_CB:
+					// Re-Initialize the ComboBox with system drives available in the system.
+					SendMessage(GetDlgItem(hDlg, IDC_COMBO_DRIVES), CB_RESETCONTENT, (WPARAM) 0, (LPARAM) 0);
+					InitComboBox_LogicalDrives(hDlg, GetDlgItem(hDlg, IDC_COMBO_DRIVES), GetDlgItem(hDlg, IDC_STATIC_VOLUME_NAME_VALUE));
+					InvalidateRect(hDlg, NULL, TRUE);
 					return TRUE;
 				// Click on the recovery radio button.
 				case IDC_RADIO_RECOVERY:
@@ -289,7 +301,14 @@ void onInit(HWND hwndDlg, WPARAM wParam)
 {
 	HWND hwndActionBtn;
 	HWND hwndBackupRadioBtn;
+	HBITMAP hBitmapRefreshIcon;
+	HICON hAppIcon;
+	int iWidthRefreshIcon = 14;
+	int iHeightRefreshIcon = 14;
+	
 	g_currentAction = BACKUP;
+	g_BackupDriveFailure = FALSE;
+	g_fileSelected = FALSE;
 
 	// Get the module path.
 	g_pstrExePath = GetOwnPath();
@@ -298,6 +317,17 @@ void onInit(HWND hwndDlg, WPARAM wParam)
 	g_pstrBatchPath = GetBatchPath((TCHAR *)g_pstrExePath);
 		
 	// Init controls.
+
+	// Load application icon in the dialog window.
+	hAppIcon = (HICON) LoadImage(g_hInstance, MAKEINTRESOURCE(IDI_ICON_APP), IMAGE_ICON, 32, 32, 0);
+	SendMessage(hwndDlg, WM_SETICON, ICON_SMALL, (LPARAM) hAppIcon);
+	
+	// Load icon in the button for updating the drives.
+	hBitmapRefreshIcon = (HBITMAP)LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_ICON_REFRESH), IMAGE_ICON, iWidthRefreshIcon, iHeightRefreshIcon, LR_SHARED | LR_CREATEDIBSECTION | LR_LOADMAP3DCOLORS);
+	SendMessage(GetDlgItem(hwndDlg, IDC_BUTTON_REFRESH_CB), BM_SETIMAGE, (WPARAM)IMAGE_ICON, (LPARAM)hBitmapRefreshIcon);
+	
+	// Create tooltip for drive refresh button.
+	CreateToolTip(hwndDlg, IDC_BUTTON_REFRESH_CB, szTTRefreshDrives);
 
 	// Disable select recovery file button.
 	EnableWindow(GetDlgItem(hwndDlg, IDC_BUTTON_SELECT_RECOVERY_FILE), FALSE);
@@ -349,6 +379,12 @@ void onClick_RadioBackup(HWND hDlg)
 	// Set radio button global flag.
 	g_bIsRecoveryBtnSelected = FALSE;
 
+	// Enable the ComboBox with detected drives.
+	EnableWindow(GetDlgItem(hDlg, IDC_COMBO_DRIVES), TRUE);
+
+	// Enable the button to refresh the list with detected drives.
+	EnableWindow(GetDlgItem(hDlg, IDC_BUTTON_REFRESH_CB), TRUE);
+
 	// Enable the button select recovery file.
 	EnableWindow(GetDlgItem(hDlg, IDC_BUTTON_SELECT_BACKUP_FILE), TRUE);
 
@@ -361,7 +397,7 @@ void onClick_RadioBackup(HWND hDlg)
 	// Check if the backup file you need is already selected.
 	// User must first select a backup file.
 	bEnableAction = (g_szBckFileName == NULL || lstrlen(g_szBckFileName) == 0) ? FALSE : TRUE;
-	EnableWindow(GetDlgItem(hDlg, IDACTION), bEnableAction);
+	EnableWindow(GetDlgItem(hDlg, IDACTION), bEnableAction && !g_BackupDriveFailure);
 }
 
 /**
@@ -380,6 +416,12 @@ void onClick_RadioRecovery(HWND hDlg)
 
 	// Enable the button select backup file.
 	EnableWindow(GetDlgItem(hDlg, IDC_BUTTON_SELECT_RECOVERY_FILE), TRUE);
+
+	// Disable the ComboBox with detected drives.
+	EnableWindow(GetDlgItem(hDlg, IDC_COMBO_DRIVES), FALSE);
+
+	// Disable the button to refresh the list with detected drives.
+	EnableWindow(GetDlgItem(hDlg, IDC_BUTTON_REFRESH_CB), FALSE);
 
 	// Disable the button select recovery file.
 	EnableWindow(GetDlgItem(hDlg, IDC_BUTTON_SELECT_BACKUP_FILE), FALSE);
@@ -520,8 +562,6 @@ void SelectFile(HWND hwndDlg, PTSTR pstrFileName, PTSTR pstrFileNameShortened, P
 		// First reset the string to avoid appending a new string in the output window.
 		*pstrFileNameShortened = '\0';
 
-		//memset(pstrFileNameShortened, 0, sizeof(pstrFileNameShortened));
-
 		// Copy the file path and compact it if needed.
 		hResult = StringCchCat(pstrFileNameShortened, MAX_PATH, ofn.lpstrFile);
 		
@@ -539,9 +579,24 @@ void SelectFile(HWND hwndDlg, PTSTR pstrFileName, PTSTR pstrFileNameShortened, P
 
 		// Set global flag to indicate readiness for restore.
 		g_currentAction = action;
+		g_fileSelected = TRUE;
 
 		// and enable the action button.
-		EnableWindow(GetDlgItem(hwndDlg, IDACTION), TRUE);
+		if (!g_BackupDriveFailure)
+		{
+			EnableWindow(GetDlgItem(hwndDlg, IDACTION), TRUE);
+		}
+		else
+		{
+			if (g_currentAction == BACKUP)
+			{
+				EnableWindow(GetDlgItem(hwndDlg, IDACTION), FALSE);
+			}
+		}
+	}
+	else
+	{
+		g_fileSelected = FALSE;
 	}
 }
 
@@ -926,6 +981,7 @@ void onChange_ComboBoxDrives(HWND hwndDlg, WORD iID_ComboBox)
 	TCHAR driveLetter[16];
 	TCHAR driveInfo[MAX_PATH + 1];
 	TCHAR spaceInfo[MAX_PATH + 1];
+	DWORD dwGetVolInf = 0;
 	
 	// Get the element selected in the combo box.
 	LPARAM iSelectedItem = SendMessage(GetDlgItem(hwndDlg, iID_ComboBox), CB_GETCURSEL, (WPARAM)0, (LPARAM)0);
@@ -937,37 +993,74 @@ void onChange_ComboBoxDrives(HWND hwndDlg, WORD iID_ComboBox)
 	_tcscpy_s(g_szBckVolumeName, sizeof(g_szBckVolumeName)/sizeof(TCHAR), driveLetter);
 
 	// Get the volume information by the selected drive.
-	GetVolumeInfo(driveLetter, driveInfo, MAX_PATH + 1);
+	dwGetVolInf = GetVolumeInfo(driveLetter, driveInfo, MAX_PATH + 1);
 
 	// Show the drive information in the static window. 
 	SetWindowText(GetDlgItem(hwndDlg, IDC_STATIC_VOLUME_NAME_VALUE), driveInfo);
 
-	// Show the space informtion in the static window.
-	GetDiskSpaces(driveLetter, spaceInfo, MAX_PATH + 1);
-	SetWindowText(GetDlgItem(hwndDlg, IDC_STATIC_VOLUME_SPACE_VALUE), spaceInfo);
+	// Check if GetVolumeInfo failed (> 0).
+	if (dwGetVolInf == 0)
+	{
+		// Show the space informtion in the static window.
+		GetDiskSpaces(driveLetter, spaceInfo, MAX_PATH + 1);
+		SetWindowText(GetDlgItem(hwndDlg, IDC_STATIC_VOLUME_SPACE_VALUE), spaceInfo);
+		g_BackupDriveFailure = FALSE;
+		
+		if (g_fileSelected == TRUE)
+		{
+			EnableWindow(GetDlgItem(hwndDlg, IDACTION), TRUE);
+		}
+	}
+	else
+	{
+		// Reset detailed information about the volume space of the drive.
+		SetWindowText(GetDlgItem(hwndDlg, IDC_STATIC_VOLUME_SPACE_VALUE), TEXT(""));
+
+		// Signal the drive error in a global variable and disable
+		// the action button to be on the safe side.
+		g_BackupDriveFailure = TRUE;
+		EnableWindow(GetDlgItem(hwndDlg, IDACTION), FALSE);
+	}
 }
 
 /*
- * Returns formatted volume information such as drive type,
- * file system type and drive label based on the drive letter in an output string (pDriveInfoBuffer).
+ * Retrieves formatted disk information such as the drive type,
+ * file system type, and drive label based on the drive letter in
+ * the output string pDriveInfoBuffer (pointer).
+ * 
+ * Returns a value > 0 if the function failed, 0 otherwise.
+ * If GetVolumeInfo fails, pDriveInfoBuffer returns more detailed information
+ * in a formatted string, if necessary.
  */
-void GetVolumeInfo(LPCTSTR pDriveLetter, LPTSTR pDriveInfoBuffer, DWORD nDriveInfoSize)
+DWORD GetVolumeInfo(LPCTSTR pDriveLetter, LPTSTR pDriveInfoBuffer, DWORD nDriveInfoSize)
 {
 	TCHAR volumeName[MAX_PATH+1];
 	TCHAR fileSysName[MAX_PATH+1];
 	DWORD serialNumber = 0;
 	DWORD maxCompLength = 0;
 	DWORD fileSysFlags = 0;
-
+	DWORD lastError = 0;
 	BOOL bGetVolInf = FALSE;
 	UINT iDrvType = 0;
 	TCHAR driveType[MAX_PATH];
+	typedef enum tagGetVolumeInfoResult 
+	{
+		RESULTS_SUCCESS = 0,
+		RESULTS_GETVOLUMEINFORMATION_FAILED = 1
+	};
 	size_t size = sizeof(driveType)/sizeof(TCHAR);
 
 	// Get drive information.
 	bGetVolInf = GetVolumeInformation(pDriveLetter, volumeName, sizeof(volumeName)/sizeof(TCHAR),
 						&serialNumber, &maxCompLength, &fileSysFlags, fileSysName, sizeof(fileSysName)/sizeof(TCHAR));
 	
+	if (bGetVolInf == 0)
+	{
+		lastError = GetLastError();
+		_stprintf_s(pDriveInfoBuffer, nDriveInfoSize, TEXT("Failed to get drive information: %d"), lastError);
+		return RESULTS_GETVOLUMEINFORMATION_FAILED;
+	}
+
 	// Identify the drive type.
 	iDrvType = GetDriveType(pDriveLetter);
 	
@@ -1007,6 +1100,8 @@ void GetVolumeInfo(LPCTSTR pDriveLetter, LPTSTR pDriveInfoBuffer, DWORD nDriveIn
 
 	// Compose additional info about the drive.
 	_stprintf_s(pDriveInfoBuffer, nDriveInfoSize, TEXT("%.15s | %s (%s)"), volumeName, driveType, fileSysName);
+
+	return RESULTS_SUCCESS;
 }
 
 /*
@@ -1027,4 +1122,53 @@ void GetDiskSpaces(LPCTSTR pDriveLetter, LPTSTR pSpaceInfoBuffer, DWORD nSpaceIn
 		// Compose memory space info.
 		_stprintf_s(pSpaceInfoBuffer, nSpaceInfoBufferSize, TEXT("Capacity: %I64u GB (free) / %I64u GB"), i64TotalNumberOfFreeBytes / (1024*1024*1024), i64TotalNumberOfBytes / (1024*1024*1024));
     }
+}
+
+/*
+ * Creates a ToolTip window for a specific control (ctrlID) with a defined text (pszText).
+ * Based on the (MIT-licensed) code from: https://github.com/MicrosoftDocs/win32/blob/docs/desktop-src/Controls/create-a-tooltip-for-a-control.md
+ * Adapted/modified to own needs by Christoph Regner (10/02/2023).
+ */
+HWND CreateToolTip(HWND hDlg, int ctrlID, LPTSTR pszText)
+{
+	HWND hwndCtrl;
+	HWND hwndTip;
+	TOOLINFO toolInfo = { 0 };
+
+    if (ctrlID == FALSE || hDlg == FALSE || pszText == FALSE)
+    {
+        return FALSE;
+    }
+
+    // Get the window handle of the control item that should get the tooltip.
+	hwndCtrl = GetDlgItem(hDlg, ctrlID);
+    
+    // Create the tooltip.
+    hwndTip = CreateWindowEx(WS_EX_TOPMOST, TOOLTIPS_CLASS, NULL,
+							 WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP, 0, 0, 0, 0,
+							 hDlg, NULL, g_hInstance, NULL);
+    
+	if (hwndCtrl == FALSE || hwndTip == FALSE)
+	{
+		return (HWND)NULL;
+	}
+
+	// Set the tooltip window at the top Z position.
+	SetWindowPos(hwndTip, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+                              
+	// Link the tooltip to the control item.
+    toolInfo.cbSize = sizeof(toolInfo);
+    toolInfo.hwnd = hwndCtrl;
+    toolInfo.uFlags = TTF_SUBCLASS;
+    toolInfo.uId = (UINT_PTR) hwndTip;
+    toolInfo.lpszText = pszText;
+	toolInfo.hinst = g_hInstance;
+
+	// Gets the coordinates of the client area of the control that will display the tooltip.
+	GetClientRect(hwndCtrl, &toolInfo.rect);
+
+	// Send a message to the ToolTip window on which control it should show up.
+	SendMessage(hwndTip, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &toolInfo);
+
+    return hwndTip;
 }

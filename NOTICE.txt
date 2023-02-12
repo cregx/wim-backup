@@ -24,4 +24,18 @@ The purpose of this file is to disclose information related to copyright ownersh
    This application is based on a skeleton code from
    https://www.codeproject.com/Articles/227831/A-Dialog-Based-Win32-C-Program-Step-by-Step
    by (c) Rodrigo Cesar de Freitas Dias https://creativecommons.org/licenses/publicdomain/
-  
+
+3) 02-2023 (Used Icons)
+   The following licenses apply to the icons used in the application.
+   On the web: https://fonts.google.com/icons?selected=Material+Icons&icon=&icon.set=Material+Icons
+   GitHub: https://github.com/google/material-design-icons
+   License: https://www.apache.org/licenses/LICENSE-2.0.txt
+
+   1. Application UI icon: app.ico (original name: Archive)
+   2. Refresh button icon (IDC_BUTTON_REFRESH_CB): refresh.ico (original name: Refresh)
+   
+   Made adjustments/changes to the icons:
+   - Conversion from SVG format to *.ico format
+   - Addjustments to the transparency
+   - Color adjustment
+   - Generation of different image sizes

@@ -171,6 +171,8 @@ copy "$(SolutionDir)wimbckup\winpeshl.ini" "$(TargetDir)winpeshl.ini"</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="action.bat" />
+    <None Include="assets\app.ico" />
+    <None Include="assets\refresh.ico" />
     <None Include="diskpart.txt" />
     <None Include="winpeshl.ini" />
   </ItemGroup>
