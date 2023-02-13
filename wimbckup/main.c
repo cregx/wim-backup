@@ -108,8 +108,8 @@ const TCHAR * g_pstrExePath;				// Full path to the exe.
 const TCHAR * g_pstrBatchPath;				// Full path to the batch file.
 BOOL g_bIsRecoveryBtnSelected;				// Which radio button ist selected?
 action_type g_currentAction;				// Restore or backup action should be performed?
-BOOL g_BackupDriveFailure;					// No information is available about the drive being backed up.
-BOOL g_fileSelected;						// Was the backup/restore file selected.
+BOOL g_BackupDriveFailure;				// No information is available about the drive being backed up.
+BOOL g_fileSelected;					// Was the backup/restore file selected.
 
 // Don't forget to increase the version number in the resource file (wimbckup.rc).
 const LPCWSTR szAppVersion	= TEXT("App version 1.1.4 / 12th February 2023\nCopyright (c) 2023 Christoph Regner (https://github.com/cregx)\nWIM-Backup is licensed under the Apache License 2.0");
@@ -130,7 +130,7 @@ const LPCWSTR szActionFailed	= TEXT("The operation has failed.\n\nError code: %l
 const LPCWSTR szActionBackup	= TEXT("Backup");
 const LPCWSTR szActionRecovery	= TEXT("Restore");
 const LPCWSTR szFileNotFound	= TEXT("The file %s could not be found.");
-const LPCWSTR szInfo			= TEXT("Information");
+const LPCWSTR szInfo		= TEXT("Information");
 const LPTSTR szTTRefreshDrives  = TEXT("Refresh list of drives");
 
 const DWORD RUN_ACTION_SHELLEX_FAILED	= 0xFFFFFFFFFFFFFFFF;		// dec => -1 (Function internal error, use GetLastError())
@@ -1118,10 +1118,10 @@ void GetDiskSpaces(LPCTSTR pDriveLetter, LPTSTR pSpaceInfoBuffer, DWORD nSpaceIn
 	bGetDiskFreeSpaceEx = GetDiskFreeSpaceEx(pDriveLetter, (PULARGE_INTEGER)&i64FreeBytesAvailableToCaller, (PULARGE_INTEGER)&i64TotalNumberOfBytes, (PULARGE_INTEGER)&i64TotalNumberOfFreeBytes);
 
 	if (bGetDiskFreeSpaceEx == TRUE)
-    {
+    	{
 		// Compose memory space info.
 		_stprintf_s(pSpaceInfoBuffer, nSpaceInfoBufferSize, TEXT("Capacity: %I64u GB (free) / %I64u GB"), i64TotalNumberOfFreeBytes / (1024*1024*1024), i64TotalNumberOfBytes / (1024*1024*1024));
-    }
+    	}
 }
 
 /*
@@ -1135,18 +1135,18 @@ HWND CreateToolTip(HWND hDlg, int ctrlID, LPTSTR pszText)
 	HWND hwndTip;
 	TOOLINFO toolInfo = { 0 };
 
-    if (ctrlID == FALSE || hDlg == FALSE || pszText == FALSE)
-    {
-        return FALSE;
-    }
+    	if (ctrlID == FALSE || hDlg == FALSE || pszText == FALSE)
+    	{
+        	return FALSE;
+    	}
 
-    // Get the window handle of the control item that should get the tooltip.
+    	// Get the window handle of the control item that should get the tooltip.
 	hwndCtrl = GetDlgItem(hDlg, ctrlID);
     
-    // Create the tooltip.
-    hwndTip = CreateWindowEx(WS_EX_TOPMOST, TOOLTIPS_CLASS, NULL,
-							 WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP, 0, 0, 0, 0,
-							 hDlg, NULL, g_hInstance, NULL);
+    	// Create the tooltip.
+    	hwndTip = CreateWindowEx(WS_EX_TOPMOST, TOOLTIPS_CLASS, NULL,
+				 WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP, 0, 0, 0, 0,
+				 hDlg, NULL, g_hInstance, NULL);
     
 	if (hwndCtrl == FALSE || hwndTip == FALSE)
 	{
@@ -1157,11 +1157,11 @@ HWND CreateToolTip(HWND hDlg, int ctrlID, LPTSTR pszText)
 	SetWindowPos(hwndTip, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
                               
 	// Link the tooltip to the control item.
-    toolInfo.cbSize = sizeof(toolInfo);
-    toolInfo.hwnd = hwndCtrl;
-    toolInfo.uFlags = TTF_SUBCLASS;
-    toolInfo.uId = (UINT_PTR) hwndTip;
-    toolInfo.lpszText = pszText;
+   	toolInfo.cbSize = sizeof(toolInfo);
+	toolInfo.hwnd = hwndCtrl;
+    	toolInfo.uFlags = TTF_SUBCLASS;
+    	toolInfo.uId = (UINT_PTR) hwndTip;
+    	toolInfo.lpszText = pszText;
 	toolInfo.hinst = g_hInstance;
 
 	// Gets the coordinates of the client area of the control that will display the tooltip.
@@ -1170,5 +1170,5 @@ HWND CreateToolTip(HWND hDlg, int ctrlID, LPTSTR pszText)
 	// Send a message to the ToolTip window on which control it should show up.
 	SendMessage(hwndTip, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &toolInfo);
 
-    return hwndTip;
+    	return hwndTip;
 }
