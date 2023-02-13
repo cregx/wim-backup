@@ -136,7 +136,7 @@ const LPTSTR szTTRefreshDrives  = TEXT("Refresh list of drives");
 const DWORD RUN_ACTION_SHELLEX_FAILED	= 0xFFFFFFFFFFFFFFFF;		// dec => -1 (Function internal error, use GetLastError())
 const DWORD RUN_ACTION_SUCCESSFUL	= 0x400;			// dec => 1024 (Successful processing of the batch file.)
 const DWORD RUN_ACTION_CANCELLED	= 0xC000013A;			// dec => 3221225786 (Cancellation of the batch job by the user,
-																	//		  e.g. because the user has clicked the X button.)
+									// e.g. because the user has clicked the X button.)
 
 // Main function.
 int WINAPI _tWinMain(HINSTANCE hInst, HINSTANCE h0, LPTSTR lpCmdLine, int nCmdShow)
@@ -628,7 +628,7 @@ void onClick_ButtonLog(HWND hwnd)
 	TCHAR * pEnv = NULL;					// Helper pointer to the final obtained %-cleaned and zero terminated environment variable, e.g. "systemdrive".
 	TCHAR * pszEnv = NULL;					// String with the name of the environment variable (null terminated).
 	TCHAR * pszEnvVal = NULL;				// String with the value of the enviornment variable (null terminated).
-	TCHAR * pszNewDismLogFilePath = NULL;	// String with the newly composed full path to the log file (null terminated).
+	TCHAR * pszNewDismLogFilePath = NULL;			// String with the newly composed full path to the log file (null terminated).
 		
 	// Allocate needed memory. Don't forget to free the memory!
 	pszEnv = (TCHAR *) calloc(MAX_BUFFER * 2, sizeof(TCHAR));
