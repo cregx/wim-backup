@@ -112,7 +112,7 @@ BOOL g_BackupDriveFailure;				// No information is available about the drive bei
 BOOL g_fileSelected;					// Was the backup/restore file selected.
 
 // Don't forget to increase the version number in the resource file (wimbckup.rc).
-const LPCWSTR szAppVersion	= TEXT("App version 1.1.4 / 12th February 2023\nCopyright (c) 2023 Christoph Regner (https://github.com/cregx)\nWIM-Backup is licensed under the Apache License 2.0");
+const LPCWSTR szAppVersion	= TEXT("App version 1.1.4 / 13th February 2023\nCopyright (c) 2023 Christoph Regner (https://github.com/cregx)\nWIM-Backup is licensed under the Apache License 2.0");
 
 // Text constants
 const LPCWSTR szRecoveryBtnText	= TEXT("Restore");
