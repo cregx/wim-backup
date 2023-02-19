@@ -57,7 +57,7 @@ The following sketch roughly illustrates the essential relationships.
 - To set up the solution, you need about 30 minutes time in the best case due to the necessary downloads (e .g. ADK)
 - Last but not least: it has a permissive license (non-proprietary) and is open source.
 
-## How to use WIM-Backup (step-by-step instructions)
+## How to prepare WIM-Backup for operation (step-by-step guide)
 
 > The instructions described below are necessary because the solution requires the use of a WinPE-based boot medium. However, this must not be made available for licensing reasons. 
 
