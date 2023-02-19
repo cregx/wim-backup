@@ -122,14 +122,14 @@ MakeWinPEMedia.cmd /iso C:\Temp\media C:\temp\wim-backup-102.iso
 
 11. After having created the **WinPE-ISO** file, we can now use **Rufus** [on Github](https://github.com/pbatard/rufus) / [Official Website](https://rufus.ie/) to transfer it to a **USB flash drive** to boot from and create a WIM-based backup or restore an existing one.
 
+> For more information about WIM backup, such as how to use it, see the [Wiki](https://github.com/cregx/wim-backup/wiki/Using-the-WIM-Backup).
+
 <p align="center" width="100%">
 <img alt="rufus-create-bootable-drive" src="https://user-images.githubusercontent.com/14788832/208671977-82813a19-1fb7-4526-9e0b-263ab906aa79.PNG" width="50%" height="50%" />
 
 ## WIM-Backup in action
 
 The following animation shows WIM-Backup in action when creating a backup.
-
-> More information on how to use WIM-Backup can be found in the [Wiki](https://github.com/cregx/wim-backup/wiki).
 
 <p align="center" width="100%">
 <img alt="wim-backup-animation-optimized" src="https://user-images.githubusercontent.com/14788832/209192953-c536cee4-1518-422d-b4d3-bfca5b6ee420.gif" width="75%" height="75%" />
