@@ -57,6 +57,11 @@ The following sketch roughly illustrates the essential relationships.
 - To set up the solution, you need about 30 minutes time in the best case due to the necessary downloads (e .g. ADK)
 - Last but not least: it has a permissive license (non-proprietary) and is open source.
 
+## Typical application scenarios
+
+- Complete backups of Windows systems (examples: a) for pure data backup purposes, b) to perform fast and valid tests after performed adjustments to the operating system environment).
+- Transfer of the backed up environment to other hardware. 
+
 ## How to prepare WIM-Backup for operation (step-by-step guide)
 
 > The instructions described below are necessary because the solution requires the use of a WinPE-based boot medium. However, this must not be made available for licensing reasons. 
