@@ -30,7 +30,7 @@ In the process of troubleshooting and fixing bugs on Windows 10-based systems, I
 <img alt="wim-backup UI" src="https://user-images.githubusercontent.com/14788832/218800850-2648214d-d5bb-428f-8aec-8201377144fb.png" width="50%" height="50%" />
 </p>
 
-#### Components of the solution
+## Components of the solution
 The solution consists of the following four components:
 
 - **wimbckup.exe**: GUI-based application of the WIM-Backup solution
@@ -38,7 +38,7 @@ The solution consists of the following four components:
 - **diskpart.txt**: parameter file with instructions for diskpart, which is needed for the restore process
 - **winpeshl.ini**: template file for the execution of WIM-Backup (wimbckup.exe) within the WinPE environment
 
-#### Rough flowchart
+### Rough flowchart
 
 The following sketch roughly illustrates the essential relationships.
 
@@ -46,7 +46,7 @@ The following sketch roughly illustrates the essential relationships.
 <img alt="wim-backup rough flowchar" src="https://user-images.githubusercontent.com/14788832/208229659-e2b77a70-f128-4320-a91e-1e2d8ac69626.png" width="70%" height="70%" />
 </p>
 
-### Brief summary
+## Brief summary
 
 - WIM-Backup always requires an external bootable media such as a USB flash drive.
 - From this drive WinPE is booted to perform a backup or restore to or from an external medium (e.g. a USB hard drive).
