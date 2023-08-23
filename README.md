@@ -187,4 +187,4 @@ Please refer to the [Code of Conduct](https://github.com/cregx/wim-backup/blob/m
 
 This program code is provided "as is", without warranty or guarantee as to its usability or effects on systems. It may be used, distributed and modified in any manner, provided that the parties agree and acknowledge that the author(s) assume(s) no responsibility or liability for the results obtained by the use of this code.
 
-[![ForTheBadge built-with-love](http://ForTheBadge.com/images/badges/built-with-love.svg)](https://www.cregx.de)
+[Made with ♥️](https://www.cregx.de)
