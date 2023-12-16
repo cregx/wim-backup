@@ -174,10 +174,10 @@ Thanks to all for using WIM-Backup.
 
 ### Stargazers
 
-[![Stargazers repo roster for @cregx/wim-backup](https://reporoster.com/stars/cregx/wim-backup)](https://github.com/cregx/wim-backup/stargazers)
+[![Stargazers repo roster for @cregx/wim-backup](http://reporoster.com/stars/cregx/wim-backup)](https://github.com/cregx/wim-backup/stargazers)
 
 ### Forkers
-[![Forkers repo roster for @cregx/wim-backup](https://reporoster.com/forks/cregx/wim-backup)](https://github.com/cregx/wim-backup/network/members)
+[![Forkers repo roster for @cregx/wim-backup](http://reporoster.com/forks/cregx/wim-backup)](https://github.com/cregx/wim-backup/network/members)
 
 ## Code of Conduct
 
