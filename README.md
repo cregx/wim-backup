@@ -90,7 +90,7 @@ copype amd64 c:\Temp\media
 ```
 
 <p align="center" width="100%">
-<img alt="copype-to-media" src="https://user-images.githubusercontent.com/14788832/208670949-73eac611-35a0-4772-8572-006f87844d15.png" width="60%" />
+<img alt="copype-to-media" src="https://user-images.githubusercontent.com/14788832/208670949-73eac611-35a0-4772-8572-006f87844d15.png" width="100%" />
 
 6. Then mount the **boot.wim** image from the previously copied **amd64** directory to the newly created **c:\temp\media\mount** directory.
 
